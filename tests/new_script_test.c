@@ -8,30 +8,33 @@
 #include "teletype.h"
 #include "log.h"
 
+error_t append_command(scene_state_t *ss, script_number_t script,
+        const char *command) {
+    char error_msg[TELE_ERROR_MSG_LENGTH];
+    tele_command_t cmd;
+    error_t ret = parse(command, &cmd, error_msg);
+    ret = validate(&cmd, error_msg);
+    uint8_t sl = ss_get_script_len(ss, script);
+    ss_set_script_command(ss, script, sl, &cmd);
+    ss_set_script_len(ss, script, sl + 1);
+    return ret;
+}
+
+
 TEST test_script_trampoline() {
     scene_state_t ss;
     exec_state_t es;
     ss_init(&ss);
-    es_init(&es);
-    es_push(&es);
-    es_set_script_number(&es, 0);
-
     
-    
-    tele_command_t cmd;
-    char error_msg[TELE_ERROR_MSG_LENGTH];
-    error_t error = parse("SCRIPT 2", &cmd, error_msg);
-    error = validate(&cmd, error_msg);
-    ss_set_script_command(&ss, 0, 0, &cmd);
-    ss_set_script_len(&ss, 0, 1);
-    error = parse("X 11", &cmd, error_msg);
-    error = validate(&cmd, error_msg);
-    ss_set_script_command(&ss, 1, 0, &cmd);
-    ss_set_script_len(&ss, 1, 1);
+    append_command(&ss, 0, "X 1");
+    append_command(&ss, 0, "SCRIPT 2");
+    append_command(&ss, 1, "X 2");
+    append_command(&ss, 1, "SCRIPT 3");
+    append_command(&ss, 2, "X 3");
 
     run_script(&ss, 0);
     
-    if (ss.variables.x != 11)
+    if (ss.variables.x != 3)
         FAIL();
     else
         PASS();

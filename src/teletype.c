@@ -155,50 +155,57 @@ process_result_t run_script_with_exec_state(scene_state_t *ss, exec_state_t *es,
     es_set_script_number(es, script_no);
     size_t i;
 
-run_script_top: script_no = es_get_script_number(es);
+    do {
+        script_no = es_get_script_number(es);
 
-    for (i = es_get_line_number(es); i < ss_get_script_len(ss, script_no); i++) {
-        es_set_line_number(es, i);
+        for (i = es_get_line_number(es);
+             es_get_script_number(es) == script_no &&
+                  i < ss_get_script_len(ss, script_no);
+             i++) {
+            es_set_line_number(es, i);
 
-        // Commented code doesn't run.
-        if (ss_get_script_comment(ss, script_no, i))
-		    continue;
+            // Commented code doesn't run.
+            if (ss_get_script_comment(ss, script_no, i))
+                continue;
 
-        // BREAK implemented with break... 
-        if (es_variables(es)->breaking) 
-            break;
-        
-        if (!es_variables(es)->executing) {
-            es_variables(es)->executing = true;
-            do {
-                // TODO: Check for 0-length commands before we bother?
-                result = process_command(ss, es,
-                                         ss_get_script_command(ss, script_no, i));
-                if (next_script != SCRIPT_COUNT) { 
-                    if (!es_variables(es)->while_continue && !es_variables(es)->breaking) {
-                        es_set_line_number(es, i + 1);
-                        es_variables(es)->executing = false;
+            // BREAK implemented with break... 
+            if (es_variables(es)->breaking) 
+                break;
+            
+            if (!es_variables(es)->executing) {
+                es_variables(es)->executing = true;
+                do {
+                    // TODO: Check for 0-length commands before we bother?
+                    result = process_command(ss, es,
+                                             ss_get_script_command(ss, script_no, i));
+                    if (next_script != SCRIPT_COUNT) { 
+                        if (!es_variables(es)->while_continue) {
+                            es_set_line_number(es, i + 1);
+                            es_variables(es)->executing = false;
+                        }
+
+                        es_push(es);
+                        if ( !es->overflow ) {
+                            es_set_script_number(es, next_script);
+                            next_script = SCRIPT_COUNT;
+                            break;
+                        }
                     }
-
-                    es_push(es);
-                    if ( !es->overflow ) {
-                        es_set_script_number(es, next_script);
-                        next_script = SCRIPT_COUNT;
-                        goto run_script_top;
-                    }
-                }
-            // and WHILE implemented with while!
-            } while (es_variables(es)->while_continue && !es_variables(es)->breaking);
+                // and WHILE implemented with while!
+                } while (es_variables(es)->while_continue && !es_variables(es)->breaking);
+                es_variables(es)->executing = false;
+            }
         }
-    }
 
-    es_variables(es)->breaking = false;
-    ss_update_script_last(ss, script_no);
+        if (script_no == es_get_script_number(es)) {
+            es_variables(es)->breaking = false;
+            ss_update_script_last(ss, script_no);
 
-    if (es->exec_depth > 1) {
-        es_pop(es);
-        goto run_script_top;
-    }
+            if (es->exec_depth > 1)
+                es_pop(es);
+        }
+
+    } while (es_get_script_number(es) != script_no);
 
     return result;
 }
