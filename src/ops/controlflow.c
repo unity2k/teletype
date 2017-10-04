@@ -219,17 +219,22 @@ static void op_SCRIPT_get(const void *NOTUSED(data), scene_state_t *ss,
 }
 
 static void op_SCRIPT_set(const void *NOTUSED(data), scene_state_t *ss,
-                          exec_state_t *es, command_state_t *cs) {
+                          exec_state_t *NOTUSED(es), command_state_t *cs) {
     uint16_t a = cs_pop(cs) - 1;
     if (a > TT_SCRIPT_8 || a < TT_SCRIPT_1)
         return;
+    script_number_t script = a;
 
+#if 0
     es_push(es);
     // an overflow causes all future SCRIPT calls to fail
     // indicates a bad user script
     if (!es->overflow)
         run_script_with_exec_state(ss, es, a);
     es_pop(es);
+#else
+    queue_next_script(script);
+#endif
 }
 
 static void op_KILL_get(const void *NOTUSED(data), scene_state_t *ss,

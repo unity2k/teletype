@@ -151,7 +151,7 @@ uint8_t ss_get_script_len(scene_state_t *ss, script_number_t idx) {
 }
 
 // private
-static void ss_set_script_len(scene_state_t *ss, script_number_t idx, uint8_t l) {
+void ss_set_script_len(scene_state_t *ss, script_number_t idx, uint8_t l) {
     ss->scripts[idx].l = l;
 }
 
@@ -161,7 +161,7 @@ const tele_command_t *ss_get_script_command(scene_state_t *ss,
 }
 
 // private
-static void ss_set_script_command(scene_state_t *ss, script_number_t script_idx,
+void ss_set_script_command(scene_state_t *ss, script_number_t script_idx,
                                   size_t c_idx, const tele_command_t *cmd) {
     memcpy(&ss->scripts[script_idx].c[c_idx], cmd, sizeof(tele_command_t));
 }
@@ -351,6 +351,8 @@ size_t es_push(exec_state_t *es) {
         es->variables[es->exec_depth].if_else_condition = true;
         es->variables[es->exec_depth].i = 0;
         es->variables[es->exec_depth].breaking = false;
+        es->variables[es->exec_depth].executing = false;
+        es->variables[es->exec_depth].line_number = 0;
         es->exec_depth += 1;                   // exec_depth = 1 at the root
     }
     else
@@ -367,6 +369,10 @@ size_t es_pop(exec_state_t *es) {
 void es_set_script_number(exec_state_t *es, uint8_t script_number) {
     if (!es_variables(es)->delayed)
         es_variables(es)->script_number = script_number;
+}
+
+script_number_t es_get_script_number(exec_state_t *es) {
+    return es_variables(es)->script_number;
 }
 
 void es_set_line_number(exec_state_t *es, uint8_t line_number) {

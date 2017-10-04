@@ -5,7 +5,7 @@ tests: main.o \
 	log.o \
 	match_token_tests.o op_mod_tests.o \
 	parser_tests.o process_tests.o \
-	turtle_tests.o \
+	turtle_tests.o new_script_test.o \
 	../src/teletype.o ../src/command.o ../src/helpers.o \
 	../src/every.o ../src/match_token.o ../src/scanner.o \
 	../src/state.o ../src/table.o ../src/turtle.o \

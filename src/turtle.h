@@ -40,7 +40,8 @@ typedef enum {
     TT_SCRIPT_8,
     METRO_SCRIPT,
     INIT_SCRIPT,
-    TEMP_SCRIPT
+    TEMP_SCRIPT,
+    SCRIPT_COUNT
 } script_number_t;
 
 typedef struct {

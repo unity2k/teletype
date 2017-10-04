@@ -10,6 +10,7 @@
 #include "parser_tests.h"
 #include "process_tests.h"
 #include "turtle_tests.h"
+#include "new_script_test.h"
 
 void tele_metro_updated() {}
 void tele_metro_reset() {}
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
     RUN_SUITE(parser_suite);
     RUN_SUITE(process_suite);
     RUN_SUITE(turtle_suite);
+    RUN_SUITE(script_suite);
 
     GREATEST_MAIN_END();
 }

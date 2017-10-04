@@ -19,7 +19,6 @@
 #define PATTERN_COUNT 4
 #define PATTERN_LENGTH 64
 #define SCRIPT_MAX_COMMANDS 6
-#define SCRIPT_COUNT 11
 #define EXEC_DEPTH 8
 #define WHILE_DEPTH 10000
 
@@ -182,6 +181,7 @@ typedef struct {
     script_number_t script_number;
     uint8_t line_number;
     bool delayed;
+    bool executing;
 } exec_vars_t;
 
 typedef struct {
@@ -195,6 +195,7 @@ extern size_t es_depth(exec_state_t *es);
 extern size_t es_push(exec_state_t *es);
 extern size_t es_pop(exec_state_t *es);
 extern void es_set_script_number(exec_state_t *es, uint8_t script_number);
+extern script_number_t es_get_script_number(exec_state_t *es);
 extern void es_set_line_number(exec_state_t *es, uint8_t line_number);
 extern uint8_t es_get_line_number(exec_state_t *es); 
 extern exec_vars_t *es_variables(exec_state_t *es);
