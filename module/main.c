@@ -718,9 +718,12 @@ void tele_kill() {
     }
 }
 
-
 bool tele_get_input_state(uint8_t n) {
     return gpio_get_pin_value(A00 + n) > 0;
+}
+
+void tele_vars_updated() {
+    set_vars_updated();
 }
 
 
@@ -747,7 +750,7 @@ int main(void) {
     init_oled();
     init_i2c_master();
 
-    print_dbg("\r\n\n// teletype! //////////////////////////////// ");
+    print_dbg("\r\n\r\n// teletype! //////////////////////////////// ");
 
     ss_init(&scene_state);
 

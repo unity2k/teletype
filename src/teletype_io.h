@@ -31,6 +31,8 @@ extern void tele_scene(uint8_t i);
 // called when a pattern is updated
 extern void tele_pattern_updated(void);
 
+extern void tele_vars_updated(void);
+
 extern void tele_kill(void);
 extern void tele_mute(void);
 extern bool tele_get_input_state(uint8_t);

@@ -187,6 +187,7 @@ void op_poke_i16(const void *data, scene_state_t *ss, exec_state_t *NOTUSED(es),
     size_t offset = (size_t)data;
     int16_t *ptr = (int16_t *)(base + offset);
     *ptr = cs_pop(cs);
+    tele_vars_updated();
 }
 
 void op_simple_i2c(const void *data, scene_state_t *NOTUSED(ss),

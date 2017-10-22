@@ -31,14 +31,22 @@
 // SCENE STATE /////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+//clang-format off
 typedef struct {
+// Maintaining this order allows for efficient access to the group
+// WARNING: DO NOT CHANGE THE ORDER OF VARIABLES a THROUGH t
     int16_t a;
+    int16_t x;
     int16_t b;
+    int16_t y;
     int16_t c;
+    int16_t z;
+    int16_t d;
+    int16_t t;
+// END WARNING SECTION
     int16_t cv[CV_COUNT];
     int16_t cv_off[CV_COUNT];
     int16_t cv_slew[CV_COUNT];
-    int16_t d;
     int16_t drunk;
     int16_t drunk_max;
     int16_t drunk_min;
@@ -47,7 +55,7 @@ typedef struct {
     int16_t in;
     int16_t m;
     bool m_act;
-    bool mutes[TRIGGER_INPUTS];
+    bool mutes[TRIGGER_INPUTS]; // TODO: replace with uint8_t bits
     int16_t o;
     int16_t o_inc;
     int16_t o_min;
@@ -58,18 +66,15 @@ typedef struct {
     int16_t q[Q_LENGTH];
     int16_t q_n;
     int16_t scene;
-    int16_t t;
     int16_t time;
     int16_t time_act;
     int16_t tr[TR_COUNT];
     int16_t tr_pol[TR_COUNT];
     int16_t tr_time[TR_COUNT];
-    int16_t x;
-    int16_t y;
-    int16_t z;
     scale_t in_scale;
     scale_t param_scale;
 } scene_variables_t;
+//clang-format on
 
 typedef struct {
     int16_t idx;

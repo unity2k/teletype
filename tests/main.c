@@ -25,6 +25,7 @@ void tele_scene(uint8_t i) {}
 void tele_pattern_updated() {}
 void tele_kill() {}
 void tele_mute() {}
+void tele_vars_updated() {}
 bool tele_get_input_state(uint8_t n) {
     return false;
 }

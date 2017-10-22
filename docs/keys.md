@@ -51,6 +51,7 @@ In most cases, the clipboard is shared between _live_, _edit_ and the 2 _preset_
 | `<down>` / `C-n` | history next        |
 | `<up>` / `C-p`   | history previous    |
 | `<enter>`        | execute command     |
+| `~`              | toggle variables    |
 | `[` / `]`        | switch to edit mode |
 
 ## Edit mode

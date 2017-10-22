@@ -17,7 +17,7 @@
 
 #define HELP_PAGES 8
 
-#define HELP1_LENGTH 46
+#define HELP1_LENGTH 47
 const char* help1[HELP1_LENGTH] = { "1/8 HELP",
                                     "[ ] NAVIGATE HELP PAGES",
                                     "UP/DOWN TO SCROLL",
@@ -40,6 +40,7 @@ const char* help1[HELP1_LENGTH] = { "1/8 HELP",
                                     "ENTER|EXECUTE",
                                     "UP|PREVIOUS",
                                     "SH-BSP|CLEAR",
+                                    "~|TOGGLE VARS",
                                     " ",
                                     "// EDIT",
                                     "[ ]|PREV, NEXT SCRIPT",
