@@ -45,6 +45,8 @@ extern const tele_op_t op_BIT_XOR;
 extern const tele_op_t op_BSET;
 extern const tele_op_t op_BGET;
 extern const tele_op_t op_BCLR;
+extern const tele_op_t op_CHAOS;
+extern const tele_op_t op_CHAOS_R;
 
 extern const tele_op_t op_XOR;  // XOR alias NE
 

@@ -164,6 +164,8 @@
         "BGET"        => { MATCH_OP(E_OP_BGET);; };
         "BCLR"        => { MATCH_OP(E_OP_BCLR);; };
         "XOR"         => { MATCH_OP(E_OP_XOR); };
+        "CHAOS"       => { MATCH_OP(E_OP_CHAOS); };
+        "CHAOS.R"     => { MATCH_OP(E_OP_CHAOS_R); };
         "+"           => { MATCH_OP(E_OP_SYM_PLUS); };
         "-"           => { MATCH_OP(E_OP_SYM_DASH); };
         "*"           => { MATCH_OP(E_OP_SYM_STAR); };

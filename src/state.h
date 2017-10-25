@@ -33,8 +33,8 @@
 
 //clang-format off
 typedef struct {
-// Maintaining this order allows for efficient access to the group
-// WARNING: DO NOT CHANGE THE ORDER OF VARIABLES a THROUGH t
+    // Maintaining this order allows for efficient access to the group
+    // WARNING: DO NOT CHANGE THE ORDER OF VARIABLES a THROUGH t
     int16_t a;
     int16_t x;
     int16_t b;
@@ -43,7 +43,7 @@ typedef struct {
     int16_t z;
     int16_t d;
     int16_t t;
-// END WARNING SECTION
+    // END WARNING SECTION
     int16_t cv[CV_COUNT];
     int16_t cv_off[CV_COUNT];
     int16_t cv_slew[CV_COUNT];
@@ -55,7 +55,7 @@ typedef struct {
     int16_t in;
     int16_t m;
     bool m_act;
-    bool mutes[TRIGGER_INPUTS]; // TODO: replace with uint8_t bits
+    bool mutes[TRIGGER_INPUTS];  // TODO: replace with uint8_t bits
     int16_t o;
     int16_t o_inc;
     int16_t o_min;

@@ -2,6 +2,7 @@
 
 #include <stdlib.h>  // rand
 
+#include "chaos.h"
 #include "euclidean/euclidean.h"
 #include "helpers.h"
 #include "table.h"
@@ -90,6 +91,14 @@ static void op_BGET_get(const void *data, scene_state_t *ss, exec_state_t *es,
                         command_state_t *cs);
 static void op_BCLR_get(const void *data, scene_state_t *ss, exec_state_t *es,
                         command_state_t *cs);
+static void op_CHAOS_get(const void *data, scene_state_t *ss, exec_state_t *es,
+                         command_state_t *cs);
+static void op_CHAOS_set(const void *data, scene_state_t *ss, exec_state_t *es,
+                         command_state_t *cs);
+static void op_CHAOS_R_get(const void *data, scene_state_t *ss,
+                           exec_state_t *es, command_state_t *cs);
+static void op_CHAOS_R_set(const void *data, scene_state_t *ss,
+                           exec_state_t *es, command_state_t *cs);
 
 
 // clang-format off
@@ -135,6 +144,8 @@ const tele_op_t op_BIT_XOR = MAKE_GET_OP(^, op_BIT_XOR_get, 2, true);
 const tele_op_t op_BSET  = MAKE_GET_OP(BSET    , op_BSET_get    , 2, true);
 const tele_op_t op_BGET  = MAKE_GET_OP(BGET    , op_BGET_get    , 2, true);
 const tele_op_t op_BCLR  = MAKE_GET_OP(BCLR    , op_BCLR_get    , 2, true);
+const tele_op_t op_CHAOS   = MAKE_GET_SET_OP(CHAOS,   op_CHAOS_get,   op_CHAOS_set, 0, true);
+const tele_op_t op_CHAOS_R = MAKE_GET_SET_OP(CHAOS.R, op_CHAOS_R_get, op_CHAOS_R_set, 0, true);
 
 const tele_op_t op_XOR   = MAKE_ALIAS_OP(XOR, op_NE_get, NULL, 2, true);
 
@@ -171,10 +182,8 @@ static void op_MUL_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
                        exec_state_t *NOTUSED(es), command_state_t *cs) {
     int32_t r = cs_pop(cs);
     r *= cs_pop(cs);
-    if (r > INT16_MAX)
-        r = INT16_MAX;
-    if (r < INT16_MIN)
-        r = INT16_MIN;
+    if (r > INT16_MAX) r = INT16_MAX;
+    if (r < INT16_MIN) r = INT16_MIN;
     cs_push(cs, (int16_t)r);
 }
 
@@ -546,4 +555,26 @@ static void op_BCLR_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
     int16_t v = cs_pop(cs);
     int16_t b = cs_pop(cs);
     cs_push(cs, v & ~(1 << b));
+}
+
+static void op_CHAOS_get(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
+                         exec_state_t *NOTUSED(es), command_state_t *cs) {
+    cs_push(cs, chaos_get_val());
+}
+
+static void op_CHAOS_set(const void *NOTUSED(data), scene_state_t *NOTUSED(ss),
+                         exec_state_t *NOTUSED(es), command_state_t *cs) {
+    chaos_set_val(cs_pop(cs));
+}
+
+static void op_CHAOS_R_get(const void *NOTUSED(data),
+                           scene_state_t *NOTUSED(ss),
+                           exec_state_t *NOTUSED(es), command_state_t *cs) {
+    cs_push(cs, chaos_get_r());
+}
+
+static void op_CHAOS_R_set(const void *NOTUSED(data),
+                           scene_state_t *NOTUSED(ss),
+                           exec_state_t *NOTUSED(es), command_state_t *cs) {
+    chaos_set_r(cs_pop(cs));
 }

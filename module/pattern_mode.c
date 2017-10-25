@@ -395,7 +395,7 @@ void process_pattern_knob(uint16_t knob, uint8_t m) {
 
 uint8_t screen_refresh_pattern() {
     if (!dirty) { return 0; }
-    
+
     char s[32];
     for (uint8_t y = 0; y < 8; y++) {
         region_fill(&line[y], 0);

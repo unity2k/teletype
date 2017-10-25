@@ -177,9 +177,8 @@ void process_live_keys(uint8_t k, uint8_t m, bool is_held_key) {
     // tilde: show the variables
     else if (match_no_mod(m, k, HID_TILDE)) {
         show_vars = !show_vars;
-        if (show_vars) 
-            dirty |= D_VARS; // combined with this...
-        dirty |= D_LIST;     // cheap flag to indicate mode just switched
+        if (show_vars) dirty |= D_VARS;  // combined with this...
+        dirty |= D_LIST;  // cheap flag to indicate mode just switched
     }
     else {  // pass the key though to the line editor
         bool processed = line_editor_process_keys(&le, k, m, is_held_key);
@@ -230,22 +229,30 @@ uint8_t screen_refresh_live() {
     }
 
     if (show_vars && ((dirty & D_VARS) || (dirty & D_LIST))) {
-        int16_t* vp = &scene_state.variables.a; // 8 int16_t all in a row, point at the first one
-                                                // relies on variable ordering. see: src/state.h
+        int16_t* vp =
+            &scene_state.variables
+                 .a;  // 8 int16_t all in a row, point at the first one
+                      // relies on variable ordering. see: src/state.h
         bool changed = dirty & D_LIST;
         char s[8];
 
-        for (int i = 0; i < 8; i+= 2)
-            if (changed || (vp[i] != vars_prev[i]) || (vp[i+1] != vars_prev[i+1])) {
+        for (int i = 0; i < 8; i += 2)
+            if (changed || (vp[i] != vars_prev[i]) ||
+                (vp[i + 1] != vars_prev[i + 1])) {
                 region_fill(&line[i / 2 + 1], 0);
                 vars_prev[i] = vp[i];
-                vars_prev[i+1] = vp[i+1];
+                vars_prev[i + 1] = vp[i + 1];
                 itoa(vp[i], s, 10);
-                font_string_region_clip_right(&line[i / 2 + 1], s, 9 * 4, 0, 0xf, 0);
-                font_string_region_clip_right(&line[i / 2 + 1], var_names + (i * 2), 12 * 4, 0, 0x1, 0);
-                itoa(vp[i+1], s, 10);
-                font_string_region_clip_right(&line[i / 2 + 1], s, 23 * 4, 0, 0xf, 0);
-                font_string_region_clip_right(&line[i / 2 + 1], var_names + ((i + 1) * 2), 26 * 4, 0, 0x1, 0);
+                font_string_region_clip_right(&line[i / 2 + 1], s, 9 * 4, 0,
+                                              0xf, 0);
+                font_string_region_clip_right(
+                    &line[i / 2 + 1], var_names + (i * 2), 12 * 4, 0, 0x1, 0);
+                itoa(vp[i + 1], s, 10);
+                font_string_region_clip_right(&line[i / 2 + 1], s, 23 * 4, 0,
+                                              0xf, 0);
+                font_string_region_clip_right(&line[i / 2 + 1],
+                                              var_names + ((i + 1) * 2), 26 * 4,
+                                              0, 0x1, 0);
                 screen_dirty |= (1 << (i / 2 + 1));
                 for (int row = 1; row < 9; row += 2) {
                     line[i / 2 + 1].data[row * 128 + 10 * 4 - 1] = 0x1;

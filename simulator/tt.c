@@ -59,8 +59,7 @@ void tele_ii_tx(uint8_t addr, uint8_t *data, uint8_t l) {
     }
 }
 
-void tele_vars_updated() {
-}
+void tele_vars_updated() {}
 
 void tele_ii_rx(uint8_t addr, uint8_t *data, uint8_t l) {
     printf("II_rx  addr:%" PRIu8 " l:%" PRIu8, addr, l);
