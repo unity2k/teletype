@@ -106,7 +106,9 @@
         "CV.OFF"      => { MATCH_OP(E_OP_CV_OFF); };
         "CV.SLEW"     => { MATCH_OP(E_OP_CV_SLEW); };
         "IN"          => { MATCH_OP(E_OP_IN); };
+        "IN.SCALE"    => { MATCH_OP(E_OP_IN_SCALE); };
         "PARAM"       => { MATCH_OP(E_OP_PARAM); };
+        "PARAM.SCALE" => { MATCH_OP(E_OP_PARAM_SCALE); };
         "PRM"         => { MATCH_OP(E_OP_PRM); };
         "TR"          => { MATCH_OP(E_OP_TR); };
         "TR.POL"      => { MATCH_OP(E_OP_TR_POL); };
