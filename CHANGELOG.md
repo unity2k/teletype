@@ -2,6 +2,7 @@
 
 ## vNEXT
 - **NEW**: added a cheat sheet PDF
+- **NEW**: new bitwise ops: &, |, BSET, BCLR, BGET
 - **IMP**: screen now redraws only lines that have changed
 - **FIX**: multiply now saturates at limits, previous behaviour returned 0 at overflow
 - **FIX**: entered values now saturate at int16 limits

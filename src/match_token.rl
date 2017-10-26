@@ -154,6 +154,13 @@
         "VV"          => { MATCH_OP(E_OP_VV); };
         "ER"          => { MATCH_OP(E_OP_ER); };
         "BPM"         => { MATCH_OP(E_OP_BPM);; };
+        "|"           => { MATCH_OP(E_OP_BIT_OR);; };
+        "&"           => { MATCH_OP(E_OP_BIT_AND);; };
+        "~"           => { MATCH_OP(E_OP_BIT_NOT);; };
+        "^"           => { MATCH_OP(E_OP_BIT_XOR);; };
+        "BSET"        => { MATCH_OP(E_OP_BSET);; };
+        "BGET"        => { MATCH_OP(E_OP_BGET);; };
+        "BCLR"        => { MATCH_OP(E_OP_BCLR);; };
         "XOR"         => { MATCH_OP(E_OP_XOR); };
         "+"           => { MATCH_OP(E_OP_SYM_PLUS); };
         "-"           => { MATCH_OP(E_OP_SYM_DASH); };
