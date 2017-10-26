@@ -14,9 +14,10 @@ static const int chaos_cell_max = 0xff;
 static chaos_state_t chaos_state = {
   .ix = 5000,
   .ir = 5000,
-  //  .algo = LOGISTIC
+  // .algo = LOGISTIC
   // .algo = CUBIC
   // .algo = HENON
+  .algo = CELLULAR
 };
 
 // scale integer state and param values to float, as appropriate for given algorithm
@@ -79,21 +80,34 @@ static int16_t henon_get_val() {
 }
 
 static int16_t cellular_get_val() {
+  uint8_t x = (uint8_t) chaos_state.ix;
+  uint8_t y = 0;
   uint8_t code = 0;
-  (void)code;
-  // TODO
-  /*
-    here's some old supercollider code.
-    NB: this is wrapping behavior.
-    the other alternative is to have endpoints fixed.
-
-    var code = 0; // 8 bit input to rule
-    code = code | (val[(i-1).wrap(0, n-1)] << 2);
-    code = code | (v << 1);
-    code = code | (val[(i+1).wrap(0, n-1)]);
-    val[i] = (rule & (1 << code)) >> code;
-   */
-  return 0;
+  for(int i=0; i<chaos_cell_count; ++i) {
+    // 3-bit code representing cell and neighbor state
+    code = 0;
+    // LSb in neighbor code = right-side neighor, wrapping
+    if(i == 0) {
+      if(x & 0x80) { code |= 0b001; }
+    } else {
+      if(x & (1 << (i-1))) { code |= 0b001; }
+    }
+    // MSb in neighbor code = left-side neighbor, wrapping
+    if (i == chaos_cell_count-1) {
+      if(x & 1) { code |= 0b100; }
+    } else {
+      if(x & (1 << (i+1))) { code |= 0b100; }
+    }
+    // middle bit = old value of this cell
+    if(x & (1<<i)) { code |= 0b010; }    
+    // lookup the bit in the rule specified by this code;
+    // this is the new bit value
+    if(chaos_state.ir & (1 << code)) {
+      y |= (1 << i);
+    }
+  }
+  chaos_state.ix = y;
+  return chaos_state.ix;
 }
 
 
