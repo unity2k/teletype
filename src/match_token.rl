@@ -166,6 +166,7 @@
         "XOR"         => { MATCH_OP(E_OP_XOR); };
         "CHAOS"       => { MATCH_OP(E_OP_CHAOS); };
         "CHAOS.R"     => { MATCH_OP(E_OP_CHAOS_R); };
+        "CHAOS.ALG"   => { MATCH_OP(E_OP_CHAOS_ALG); };
         "+"           => { MATCH_OP(E_OP_SYM_PLUS); };
         "-"           => { MATCH_OP(E_OP_SYM_DASH); };
         "*"           => { MATCH_OP(E_OP_SYM_STAR); };

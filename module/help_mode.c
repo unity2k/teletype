@@ -117,12 +117,16 @@ const char* help4[HELP4_LENGTH] = { "4/8 DATA AND TABLES",
                                     "VV 0-1000|V WITH 2 DECIMALS",
                                     "BPM 2-MAX|MS PER BPM" };
 
-#define HELP5_LENGTH 42
+#define HELP5_LENGTH 46
 const char* help5[HELP5_LENGTH] = { "5/8 OPERATORS",
                                     " ",
                                     "RAND A|RANDOM 0 - A",
                                     "RRAND A B|RANDOM A - B",
                                     "TOSS|RANDOM 0 OR 1",
+                                    " ",
+                                    "CHAOS|CHAOTIC NUMBER",
+                                    "CHAOS.R|CHAOS PARAMETER",
+                                    "CHAOS.ALG|CHAOS ALGORITHM",
                                     " ",
                                     "AVG A B|AVERAGE OF INS",
                                     "MIN A B|LESSER OF INS",

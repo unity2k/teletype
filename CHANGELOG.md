@@ -5,6 +5,7 @@
 - **NEW**: new bitwise ops: &, |, BSET, BCLR, BGET
 - **NEW**: new ops `PARAM.SCALE min max` and `IN.SCALE min max` to add static scaling to inputs
 - **NEW**: blanking screensaver after 90 minutes of keyboard inactivity, any key to wake
+- **NEW**: new op: CHAOS chaotic sequence generator.  Control with CHAOS.ALG and CHAOS.R
 - **IMP**: screen now redraws only lines that have changed
 - **FIX**: multiply now saturates at limits, previous behaviour returned 0 at overflow
 - **FIX**: entered values now saturate at int16 limits

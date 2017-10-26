@@ -44,6 +44,7 @@
 #include "teletype.h"
 #include "teletype_io.h"
 #include "usb_disk_mode.h"
+#include "chaos.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -780,6 +781,8 @@ int main(void) {
     metro_timer_enabled = false;
     tele_metro_updated();
 
+    // init chaos generator
+    chaos_init();
     clear_delays(&scene_state);
 
     aout[0].slew = 1;

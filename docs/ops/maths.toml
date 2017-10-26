@@ -219,3 +219,15 @@ short = "converts a voltage to a value usable by the CV outputs (`x` between `0`
 [EXP]
 prototype = "EXP x"
 short = "exponentiation table lookup. `0-16383` range (V `0-10`)"
+
+[CHAOS]
+prototype = "CHAOS x"
+short = "get next value from chaos generator, or set the current value"
+
+["CHAOS.R"]
+prototype = "CHAOS.R x"
+short = "get or set the `R` parameter for the `CHAOS` generator"
+
+["CHAOS.ALG"]
+prototype = "CHAOS.ALG x"
+short = "get or set the algorithm for the `CHAOS` generator. 0 = LOGISTIC, 1 = CUBIC, 2 = HENON, 3 = CELLULAR"
