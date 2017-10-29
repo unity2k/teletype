@@ -229,12 +229,16 @@ uint8_t screen_refresh_live() {
     }
 
     if (show_vars && ((dirty & D_VARS) || (dirty & D_LIST))) {
-        int16_t* vp =
-            &scene_state.variables
-                 .a;  // 8 int16_t all in a row, point at the first one
+        int16_t* vp = &scene_state.variables.a;
+                      // 8 int16_t all in a row, point at the first one
                       // relies on variable ordering. see: src/state.h
         bool changed = dirty & D_LIST;
         char s[8];
+
+        if (changed) {
+            region_fill(&line[5], 0);
+            screen_dirty |= (1 << 5);
+        }
 
         for (int i = 0; i < 8; i += 2)
             if (changed || (vp[i] != vars_prev[i]) ||
