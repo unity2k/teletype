@@ -326,11 +326,11 @@ scene_turtle_t *ss_turtle_get(scene_state_t *ss) {
 }
 
 void ss_set_param_scale(scene_state_t *ss, int16_t min, int16_t max) {
-    ss->variables.param_scale = scale_init(0, 16384, min, max);
+    ss->variables.param_scale = scale_init(0, 16383, min, max);
 }
 
 void ss_set_in_scale(scene_state_t *ss, int16_t min, int16_t max) {
-    ss->variables.in_scale = scale_init(0, 16384, min, max);
+    ss->variables.in_scale = scale_init(0, 16383, min, max);
 }
 
 int16_t ss_get_param(scene_state_t *ss) {
