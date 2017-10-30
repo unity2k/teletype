@@ -236,6 +236,11 @@ uint8_t screen_refresh_live() {
         bool changed = dirty & D_LIST;
         char s[8];
 
+        if (changed) {
+            region_fill(&line[5], 0);
+            screen_dirty |= (1 << 5);
+        }
+
         for (int i = 0; i < 8; i += 2)
             if (changed || (vp[i] != vars_prev[i]) ||
                 (vp[i + 1] != vars_prev[i + 1])) {

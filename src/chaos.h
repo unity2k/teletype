@@ -3,10 +3,11 @@
 #include <stdint.h>
 
 typedef enum {
-    CHAOS_LOGISTIC,  // logistic map
-    CHAOS_CUBIC,     // cubic map
-    CHAOS_HENON,     // henon map
-    CHAOS_CELLULAR   // 1-d binary cellular automaton
+    CHAOS_ALGO_LOGISTIC,  // logistic map
+    CHAOS_ALGO_CUBIC,     // cubic map
+    CHAOS_ALGO_HENON,     // henon map
+    CHAOS_ALGO_CELLULAR,   // 1-d binary cellular automaton
+    CHAOS_ALGO_COUNT // unused, don't remve
 } chaos_algo_t;
 
 // keep value and parameter in both integer and float formats

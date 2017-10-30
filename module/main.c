@@ -30,6 +30,7 @@
 #include "util.h"
 
 // this
+#include "chaos.h"
 #include "conf_board.h"
 #include "edit_mode.h"
 #include "flash.h"
@@ -44,7 +45,6 @@
 #include "teletype.h"
 #include "teletype_io.h"
 #include "usb_disk_mode.h"
-#include "chaos.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////

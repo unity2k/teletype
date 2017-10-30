@@ -18,25 +18,25 @@ static const int chaos_cell_count = 8;
 static const int chaos_cell_max = 0xff;
 
 static chaos_state_t chaos_state = {
-    .ix = 5000, .ir = 5000, .alg = CHAOS_LOGISTIC
+    .ix = 5000, .ir = 5000, .alg = CHAOS_ALGO_LOGISTIC
 };
 
 void chaos_init() {
     chaos_scale_values(&chaos_state);
 }
 
-// scale integer state and param values to float, as appropriate for given
-// algorithm
+// scale integer state and param values to float,
+// as appropriate for current algorithm
 static void chaos_scale_values(chaos_state_t* state) {
     switch(state->alg) {
-    case CHAOS_HENON:
+    case CHAOS_ALGO_HENON:
 	// for henon, x in [-1.5, 1.5], r in [1, 1.4]
 	state->fx = state->ix / (float)chaos_value_max * 1.5;
 	state->fr = 1.f + state->ir / (float)chaos_param_max * 0.4;
 	if(state->fr < 1.f) { state->fr = 1.f; }
 	if(state->fr > 1.4) { state->fr = 1.4f; } 
 	break;
-    case CHAOS_CELLULAR:
+    case CHAOS_ALGO_CELLULAR:
 	// 1d binary CA takes binary state and rule
 	if(state->ix > chaos_cell_max) { state->ix = chaos_cell_max; }
 	if(state->ix < 0 ) { state->ix = 0; }
@@ -44,8 +44,8 @@ static void chaos_scale_values(chaos_state_t* state) {
 	if(state->ir > 0xff) { state->ir = 0xff; }
 	if(state->ir < 0 ) { state->ir = 0; }
 	break;
-    case CHAOS_CUBIC:
-    case CHAOS_LOGISTIC: // fall through    
+    case CHAOS_ALGO_CUBIC:
+    case CHAOS_ALGO_LOGISTIC: // fall through    
     default:
 	// for cubic / logistic, x in [-1, 1] and r in [3.2, 4)
 	state->fx = state->ix / (float)chaos_value_max;
@@ -78,9 +78,13 @@ static int16_t cubic_get_val() {
 static int16_t henon_get_val() {
     float x0_2 = chaos_state.fx0 * chaos_state.fx0;
     float x = 1.f - (x0_2 * chaos_state.fr) + (chaos_henon_b * chaos_state.fx1);
-    // clamp to avoid blowup
-    if (x < -1.5) { x = -1.5; }
-    if (x > 1.5) { x = 1.5; }
+    // reflect bounds to avoid blowup
+    while (x < -1.5) {
+      x = -1.5 - x;      
+    }
+    while (x > 1.5) { 
+      x = 1.5 - x;
+    }
     chaos_state.fx1 = chaos_state.fx0;
     chaos_state.fx0 = chaos_state.fx;
     chaos_state.fx = x;
@@ -122,10 +126,10 @@ static int16_t cellular_get_val() {
 
 int16_t chaos_get_val() {
     switch (chaos_state.alg) {
-    case CHAOS_LOGISTIC: return logistic_get_val();
-    case CHAOS_CUBIC: return cubic_get_val();
-    case CHAOS_HENON: return henon_get_val();
-    case CHAOS_CELLULAR: return cellular_get_val();
+    case CHAOS_ALGO_LOGISTIC: return logistic_get_val();
+    case CHAOS_ALGO_CUBIC: return cubic_get_val();
+    case CHAOS_ALGO_HENON: return henon_get_val();
+    case CHAOS_ALGO_CELLULAR: return cellular_get_val();
     default: return 0;
     }
 }
@@ -140,8 +144,10 @@ int16_t chaos_get_r() {
 }
 
 void chaos_set_alg(int16_t a) {
-    if (a > CHAOS_CELLULAR || a < CHAOS_LOGISTIC) a = CHAOS_LOGISTIC;
+  if(a < 0) { a = 0; }
+  if(a >= CHAOS_ALGO_COUNT) { a = CHAOS_ALGO_COUNT - 1; }
     chaos_state.alg = a;
+    chaos_scale_values(&chaos_state);
 }
 
 int16_t chaos_get_alg() {
