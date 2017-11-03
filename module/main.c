@@ -436,7 +436,7 @@ void check_events(void) {
 
 // defined in globals.h
 void set_mode(tele_mode_t m) {
-    if (m == mode) return;
+    if (m == mode && m == M_SCREENSAVER) return;
     last_mode = mode;
     switch (m) {
         case M_LIVE:

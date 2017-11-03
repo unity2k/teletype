@@ -41,7 +41,7 @@ void set_edit_mode() {
 
 void set_edit_mode_script(uint8_t new_script) {
     script = new_script;
-    if (script >= SCRIPT_COUNT) script = SCRIPT_COUNT - 1;
+    if (script >= SCRIPT_COUNT) script = SCRIPT_COUNT - 2;
     dirty = D_ALL;
 }
 
