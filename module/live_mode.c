@@ -197,7 +197,7 @@ uint8_t screen_refresh_live() {
     }
 
     if (dirty & D_MESSAGE) {
-        char s[32];
+        char s[36];
         if (status != E_OK) {
             strcpy(s, tele_error(status));
             if (error_msg[0]) {
@@ -213,8 +213,8 @@ uint8_t screen_refresh_live() {
             output.has_value = false;
         }
         else if (show_welcome_message) {
-            strcpy(s, TELETYPE_VERSION ": ");
-            strcat(s, git_version);
+            strcpy(s, "TELETYPE: ");
+            strncat(s, git_version, 35 - strlen(s));
             show_welcome_message = false;
         }
         else {
@@ -241,7 +241,7 @@ uint8_t screen_refresh_live() {
             screen_dirty |= (1 << 5);
         }
 
-        for (int i = 0; i < 8; i += 2)
+        for (size_t i = 0; i < 8; i += 2)
             if (changed || (vp[i] != vars_prev[i]) ||
                 (vp[i + 1] != vars_prev[i + 1])) {
                 region_fill(&line[i / 2 + 1], 0);
