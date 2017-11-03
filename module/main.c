@@ -259,7 +259,7 @@ void handler_PollADC(int32_t data) {
 
     ss_set_in(&scene_state, adc[0] << 2);
 
-    if (mode == M_SCREENSAVER && (adc[1] >> 3 != last_knob >> 3)) {
+    if (mode == M_SCREENSAVER && (adc[1] >> 8 != last_knob >> 8)) {
         ss_counter = 0;
         set_last_mode();
     }
