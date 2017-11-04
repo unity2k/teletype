@@ -237,31 +237,31 @@ uint8_t screen_refresh_live() {
         char s[8];
 
         if (changed) {
-            region_fill(&line[5], 0);
-            screen_dirty |= (1 << 5);
+            region_fill(&line[1], 0);
+            screen_dirty |= (1 << 1);
         }
 
         for (size_t i = 0; i < 8; i += 2)
             if (changed || (vp[i] != vars_prev[i]) ||
                 (vp[i + 1] != vars_prev[i + 1])) {
-                region_fill(&line[i / 2 + 1], 0);
+                region_fill(&line[i / 2 + 2], 0);
                 vars_prev[i] = vp[i];
                 vars_prev[i + 1] = vp[i + 1];
                 itoa(vp[i], s, 10);
-                font_string_region_clip_right(&line[i / 2 + 1], s, 9 * 4, 0,
+                font_string_region_clip_right(&line[i / 2 + 2], s, 11 * 4, 0,
                                               0xf, 0);
                 font_string_region_clip_right(
-                    &line[i / 2 + 1], var_names + (i * 2), 12 * 4, 0, 0x1, 0);
+                    &line[i / 2 + 2], var_names + (i * 2), 14 * 4, 0, 0x1, 0);
                 itoa(vp[i + 1], s, 10);
-                font_string_region_clip_right(&line[i / 2 + 1], s, 23 * 4, 0,
+                font_string_region_clip_right(&line[i / 2 + 2], s, 25 * 4, 0,
                                               0xf, 0);
-                font_string_region_clip_right(&line[i / 2 + 1],
-                                              var_names + ((i + 1) * 2), 26 * 4,
+                font_string_region_clip_right(&line[i / 2 + 2],
+                                              var_names + ((i + 1) * 2), 28 * 4,
                                               0, 0x1, 0);
-                screen_dirty |= (1 << (i / 2 + 1));
+                screen_dirty |= (1 << (i / 2 + 2));
                 for (int row = 1; row < 9; row += 2) {
-                    line[i / 2 + 1].data[row * 128 + 10 * 4 - 1] = 0x1;
-                    line[i / 2 + 1].data[row * 128 + 24 * 4 - 1] = 0x1;
+                    line[i / 2 + 2].data[row * 128 + 12 * 4 - 1] = 0x1;
+                    line[i / 2 + 2].data[row * 128 + 26 * 4 - 1] = 0x1;
                 }
             }
         dirty &= ~D_VARS;
