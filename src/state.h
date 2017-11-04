@@ -194,10 +194,12 @@ int16_t ss_get_in_min(scene_state_t *);
 int16_t ss_get_in_max(scene_state_t *);
 void ss_set_in_min(scene_state_t *, int16_t);
 void ss_set_in_max(scene_state_t *, int16_t);
+void ss_reset_in_cal(scene_state_t *);
 int16_t ss_get_param_min(scene_state_t *);
 int16_t ss_get_param_max(scene_state_t *);
 void ss_set_param_min(scene_state_t *, int16_t);
 void ss_set_param_max(scene_state_t *, int16_t);
+void ss_reset_param_cal(scene_state_t *);
 
 ////////////////////////////////////////////////////////////////////////////////
 // EXEC STATE //////////////////////////////////////////////////////////////////

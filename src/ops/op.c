@@ -56,9 +56,10 @@ const tele_op_t *tele_ops[E_OP__LENGTH] = {
 
     // hardware
     &op_CV, &op_CV_OFF, &op_CV_SLEW, &op_IN, &op_IN_SCALE, &op_PARAM,
-    &op_PARAM_SCALE, &op_IN_CAL_MIN, &op_IN_CAL_MAX, &op_PARAM_CAL_MIN,
-    &op_PARAM_CAL_MAX, &op_PRM, &op_TR, &op_TR_POL, &op_TR_TIME, &op_TR_TOG,
-    &op_TR_PULSE, &op_TR_P, &op_CV_SET, &op_MUTE, &op_STATE,
+    &op_PARAM_SCALE, &op_IN_CAL_MIN, &op_IN_CAL_MAX, &op_IN_CAL_RESET,
+    &op_PARAM_CAL_MIN, &op_PARAM_CAL_MAX, &op_PARAM_CAL_RESET, &op_PRM, &op_TR,
+    &op_TR_POL, &op_TR_TIME, &op_TR_TOG, &op_TR_PULSE, &op_TR_P, &op_CV_SET,
+    &op_MUTE, &op_STATE,
 
     // maths
     &op_ADD, &op_SUB, &op_MUL, &op_DIV, &op_MOD, &op_RAND, &op_RRAND, &op_TOSS,

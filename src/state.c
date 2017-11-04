@@ -379,6 +379,13 @@ void ss_set_param_max(scene_state_t *ss, int16_t max) {
     tele_save_calibration();
 }
 
+void ss_reset_param_cal(scene_state_t *ss) {
+    ss->cal.p_max = 16383;
+    ss->cal.p_min = 0;
+    ss_update_param_scale(ss);
+    tele_save_calibration();
+}
+
 int16_t ss_get_in_min(scene_state_t *ss) {
     return ss->cal.i_min;
 }
@@ -395,7 +402,14 @@ void ss_set_in_min(scene_state_t *ss, int16_t min) {
 
 void ss_set_in_max(scene_state_t *ss, int16_t max) {
     ss->cal.i_max = max;
-    ss_update_param_scale(ss);
+    ss_update_in_scale(ss);
+    tele_save_calibration();
+}
+
+void ss_reset_in_cal(scene_state_t *ss) {
+    ss->cal.i_max = 16383;
+    ss->cal.i_min = 0;
+    ss_update_in_scale(ss);
     tele_save_calibration();
 }
 

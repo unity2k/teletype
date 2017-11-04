@@ -109,10 +109,12 @@
         "IN.SCALE"    => { MATCH_OP(E_OP_IN_SCALE); };
         "IN.CAL.MIN"  => { MATCH_OP(E_OP_IN_CAL_MIN); };
         "IN.CAL.MAX"  => { MATCH_OP(E_OP_IN_CAL_MAX); };
+        "IN.CAL.RESET" => { MATCH_OP(E_OP_IN_CAL_RESET); };
         "PARAM"       => { MATCH_OP(E_OP_PARAM); };
         "PARAM.SCALE" => { MATCH_OP(E_OP_PARAM_SCALE); };
         "PARAM.CAL.MIN"  => { MATCH_OP(E_OP_PARAM_CAL_MIN); };
         "PARAM.CAL.MAX"  => { MATCH_OP(E_OP_PARAM_CAL_MAX); };
+        "PARAM.CAL.RESET" => { MATCH_OP(E_OP_PARAM_CAL_RESET); };
         "PRM"         => { MATCH_OP(E_OP_PRM); };
         "TR"          => { MATCH_OP(E_OP_TR); };
         "TR.POL"      => { MATCH_OP(E_OP_TR_POL); };
