@@ -29,6 +29,7 @@ void tele_vars_updated() {}
 bool tele_get_input_state(uint8_t n) {
     return false;
 }
+void tele_save_calibration() {}
 
 GREATEST_MAIN_DEFS();
 

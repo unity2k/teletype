@@ -50,5 +50,4 @@ void clear_delays(scene_state_t *ss);
 
 const char *tele_error(error_t);
 
-
 #endif

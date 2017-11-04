@@ -9,6 +9,18 @@ typedef struct {
     _SCALE_T m;
 } scale_t;
 
+typedef struct {
+    SCALE_T p_min;
+    SCALE_T p_max;
+    SCALE_T i_min;
+    SCALE_T i_max;
+} cal_data_t;
+
+typedef struct {
+    SCALE_T out_min;
+    SCALE_T out_max;
+} scale_data_t;
+
 /*
  * x1, y1 = izero, ozero
  * x2, y2 = imax, omax
@@ -26,22 +38,21 @@ typedef struct {
  *
  */
 
-#define TO_Q16(x) ((x) << 16)
-#define FROM_Q16(x) ((x) >> 16)
+#define TO_Q15(x) ((x) << 15)
+#define FROM_Q15(x) ((((x) >> 14) + 1) >> 1)
 
-// WARNING!
-// Not guarded against izero = imax. Will crash (/0).  Check before you call.
 static inline scale_t scale_init(SCALE_T izero, SCALE_T imax, SCALE_T ozero,
                                  SCALE_T omax) {
     scale_t ret;
+    if (izero == imax) imax = 1;
     // Impart 16 bits of precision
-    ret.m = TO_Q16(omax - ozero) / (imax - izero);
-    ret.b = ozero - FROM_Q16(ret.m * izero);
+    ret.m = TO_Q15(omax - ozero) / (imax - izero);
+    ret.b = ozero - FROM_Q15(ret.m * izero);
     return ret;
 }
 
 static inline SCALE_T scale_get(scale_t scale, SCALE_T x) {
-    return FROM_Q16(scale.m * x) + scale.b;
+    return FROM_Q15(scale.m * x) + scale.b;
 }
 
 #endif

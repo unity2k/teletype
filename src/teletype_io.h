@@ -37,4 +37,6 @@ extern void tele_kill(void);
 extern void tele_mute(void);
 extern bool tele_get_input_state(uint8_t);
 
+void tele_save_calibration(void);
+
 #endif

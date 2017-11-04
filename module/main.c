@@ -725,6 +725,9 @@ void tele_vars_updated() {
     set_vars_updated();
 }
 
+void tele_save_calibration() {
+    flash_update_cal(&scene_state.cal);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // main
@@ -755,6 +758,11 @@ int main(void) {
 
     // prepare flash (if needed)
     flash_prepare();
+
+    // load calibration data from flash
+    flash_get_cal(&scene_state.cal);
+    ss_update_param_scale(&scene_state);
+    ss_update_in_scale(&scene_state);
 
     // load preset from flash
     preset_select = flash_last_saved_scene();

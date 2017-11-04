@@ -39,11 +39,13 @@ void ss_variables_init(scene_state_t *ss) {
         .time_act = 1,
         .tr_pol = { 1, 1, 1, 1 },
         .tr_time = { 100, 100, 100, 100 },
-        .in_scale = scale_init(0, 16384, 0, 16384),
-        .param_scale = scale_init(0, 16384, 0, 16384)
+        .in_range = { 0, 16383 },
+        .param_range = { 0, 16383 },
     };
 
     memcpy(&ss->variables, &default_variables, sizeof(default_variables));
+    ss_update_param_scale(ss);
+    ss_update_in_scale(ss);
 }
 
 void ss_patterns_init(scene_state_t *ss) {
@@ -325,12 +327,28 @@ scene_turtle_t *ss_turtle_get(scene_state_t *ss) {
     return &ss->turtle;
 }
 
+void ss_update_param_scale(scene_state_t *ss) {
+    ss->variables.param_scale = scale_init(ss->cal.p_min, ss->cal.p_max,
+                                           ss->variables.param_range.out_min,
+                                           ss->variables.param_range.out_max);
+}
+
+void ss_update_in_scale(scene_state_t *ss) {
+    ss->variables.in_scale =
+        scale_init(ss->cal.i_min, ss->cal.i_max, ss->variables.in_range.out_min,
+                   ss->variables.in_range.out_max);
+}
+
 void ss_set_param_scale(scene_state_t *ss, int16_t min, int16_t max) {
-    ss->variables.param_scale = scale_init(0, 16383, min, max);
+    ss->variables.param_range.out_min = min;
+    ss->variables.param_range.out_max = max;
+    ss_update_param_scale(ss);
 }
 
 void ss_set_in_scale(scene_state_t *ss, int16_t min, int16_t max) {
-    ss->variables.in_scale = scale_init(0, 16383, min, max);
+    ss->variables.in_range.out_min = min;
+    ss->variables.in_range.out_max = max;
+    ss_update_in_scale(ss);
 }
 
 int16_t ss_get_param(scene_state_t *ss) {
@@ -339,6 +357,46 @@ int16_t ss_get_param(scene_state_t *ss) {
 
 int16_t ss_get_in(scene_state_t *ss) {
     return scale_get(ss->variables.in_scale, ss->variables.in);
+}
+
+int16_t ss_get_param_min(scene_state_t *ss) {
+    return ss->cal.p_min;
+}
+
+int16_t ss_get_param_max(scene_state_t *ss) {
+    return ss->cal.p_max;
+}
+
+void ss_set_param_min(scene_state_t *ss, int16_t min) {
+    ss->cal.p_min = min;
+    ss_update_param_scale(ss);
+    tele_save_calibration();
+}
+
+void ss_set_param_max(scene_state_t *ss, int16_t max) {
+    ss->cal.p_max = max;
+    ss_update_param_scale(ss);
+    tele_save_calibration();
+}
+
+int16_t ss_get_in_min(scene_state_t *ss) {
+    return ss->cal.i_min;
+}
+
+int16_t ss_get_in_max(scene_state_t *ss) {
+    return ss->cal.i_max;
+}
+
+void ss_set_in_min(scene_state_t *ss, int16_t min) {
+    ss->cal.i_min = min;
+    ss_update_in_scale(ss);
+    tele_save_calibration();
+}
+
+void ss_set_in_max(scene_state_t *ss, int16_t max) {
+    ss->cal.i_max = max;
+    ss_update_param_scale(ss);
+    tele_save_calibration();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

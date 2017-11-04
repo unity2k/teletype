@@ -20,10 +20,20 @@ static void op_IN_get(const void *NOTUSED(data), scene_state_t *ss,
                       exec_state_t *NOTUSED(es), command_state_t *cs);
 static void op_IN_SCALE_set(const void *NOTUSED(data), scene_state_t *ss,
                             exec_state_t *NOTUSED(es), command_state_t *cs);
+static void op_IN_CAL_MIN_set(const void *NOTUSED(data), scene_state_t *ss,
+                              exec_state_t *NOTUSED(es), command_state_t *cs);
+static void op_IN_CAL_MAX_set(const void *NOTUSED(data), scene_state_t *ss,
+                              exec_state_t *NOTUSED(es), command_state_t *cs);
 static void op_PARAM_get(const void *NOTUSED(data), scene_state_t *ss,
                          exec_state_t *NOTUSED(es), command_state_t *cs);
 static void op_PARAM_SCALE_set(const void *NOTUSED(data), scene_state_t *ss,
                                exec_state_t *NOTUSED(es), command_state_t *cs);
+static void op_PARAM_CAL_MIN_set(const void *NOTUSED(data), scene_state_t *ss,
+                                 exec_state_t *NOTUSED(es),
+                                 command_state_t *cs);
+static void op_PARAM_CAL_MAX_set(const void *NOTUSED(data), scene_state_t *ss,
+                                 exec_state_t *NOTUSED(es),
+                                 command_state_t *cs);
 static void op_TR_get(const void *data, scene_state_t *ss, exec_state_t *es,
                       command_state_t *cs);
 static void op_TR_set(const void *data, scene_state_t *ss, exec_state_t *es,
@@ -68,6 +78,10 @@ const tele_op_t op_TR_P     = MAKE_ALIAS_OP  (TR.P    , op_TR_PULSE_get, NULL, 1
 const tele_op_t op_CV_SET   = MAKE_GET_OP    (CV.SET  , op_CV_SET_get  , 2, false);
 const tele_op_t op_MUTE     = MAKE_GET_SET_OP(MUTE    , op_MUTE_get    , op_MUTE_set   , 1, true);
 const tele_op_t op_STATE    = MAKE_GET_OP    (STATE   , op_STATE_get   , 1, true );
+const tele_op_t op_IN_CAL_MIN    = MAKE_GET_OP (IN.CAL.MIN, op_IN_CAL_MIN_set, 0, true);
+const tele_op_t op_IN_CAL_MAX    = MAKE_GET_OP (IN.CAL.MAX, op_IN_CAL_MAX_set, 0, true);
+const tele_op_t op_PARAM_CAL_MIN = MAKE_GET_OP (PARAM.CAL.MIN, op_PARAM_CAL_MIN_set, 0, true);
+const tele_op_t op_PARAM_CAL_MAX = MAKE_GET_OP (PARAM.CAL.MAX, op_PARAM_CAL_MAX_set, 0, true);
 // clang-format on
 
 static void op_CV_get(const void *NOTUSED(data), scene_state_t *ss,
@@ -204,6 +218,18 @@ static void op_IN_SCALE_set(const void *NOTUSED(data), scene_state_t *ss,
     ss_set_in_scale(ss, min, max);
 }
 
+static void op_IN_CAL_MIN_set(const void *NOTUSED(data), scene_state_t *ss,
+                              exec_state_t *NOTUSED(es), command_state_t *cs) {
+    ss_set_in_min(ss, ss->variables.in);
+    cs_push(cs, ss->variables.in);
+}
+
+static void op_IN_CAL_MAX_set(const void *NOTUSED(data), scene_state_t *ss,
+                              exec_state_t *NOTUSED(es), command_state_t *cs) {
+    ss_set_in_max(ss, ss->variables.in);
+    cs_push(cs, ss->variables.in);
+}
+
 static void op_PARAM_get(const void *NOTUSED(data), scene_state_t *ss,
                          exec_state_t *NOTUSED(es), command_state_t *cs) {
     cs_push(cs, ss_get_param(ss));
@@ -214,6 +240,20 @@ static void op_PARAM_SCALE_set(const void *NOTUSED(data), scene_state_t *ss,
     int16_t min = cs_pop(cs);
     int16_t max = cs_pop(cs);
     ss_set_param_scale(ss, min, max);
+}
+
+static void op_PARAM_CAL_MIN_set(const void *NOTUSED(data), scene_state_t *ss,
+                                 exec_state_t *NOTUSED(es),
+                                 command_state_t *cs) {
+    ss_set_param_min(ss, ss->variables.param);
+    cs_push(cs, ss->variables.param);
+}
+
+static void op_PARAM_CAL_MAX_set(const void *NOTUSED(data), scene_state_t *ss,
+                                 exec_state_t *NOTUSED(es),
+                                 command_state_t *cs) {
+    ss_set_param_max(ss, ss->variables.param);
+    cs_push(cs, ss->variables.param);
 }
 
 static void op_TR_get(const void *NOTUSED(data), scene_state_t *ss,

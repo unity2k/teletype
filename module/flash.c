@@ -22,6 +22,7 @@ typedef const struct {
     nvram_scene_t scenes[SCENE_SLOTS];
     uint8_t last_scene;
     uint8_t fresh;
+    cal_data_t cal;
 } nvram_data_t;
 
 
@@ -43,6 +44,9 @@ void flash_prepare() {
     memset(text, 0, SCENE_TEXT_LINES * SCENE_TEXT_CHARS);
 
     for (uint8_t i = 0; i < SCENE_SLOTS; i++) { flash_write(i, &scene, &text); }
+
+    cal_data_t cal = { 0, 16383, 0, 16383 };
+    flashc_memcpy((void *)&f.cal, &cal, sizeof(cal), true);
     flash_update_last_saved_scene(0);
     flashc_memset8((void *)&f.fresh, FIRSTRUN_KEY, 1, true);
 }
@@ -77,4 +81,12 @@ void flash_update_last_saved_scene(uint8_t preset_no) {
 
 const char *flash_scene_text(uint8_t preset_no, size_t line) {
     return f.scenes[preset_no].text[line];
+}
+
+void flash_update_cal(cal_data_t *cal) {
+    flashc_memcpy((void *)&f.cal, cal, sizeof(cal_data_t), true);
+}
+
+void flash_get_cal(cal_data_t *cal) {
+    *cal = f.cal;
 }

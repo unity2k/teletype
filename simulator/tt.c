@@ -92,6 +92,8 @@ bool tele_get_input_state(uint8_t n) {
     return false;
 }
 
+void tele_save_calibration() {}
+
 int main() {
     char *in;
     time_t t;

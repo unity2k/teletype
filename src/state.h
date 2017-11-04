@@ -71,7 +71,9 @@ typedef struct {
     int16_t tr[TR_COUNT];
     int16_t tr_pol[TR_COUNT];
     int16_t tr_time[TR_COUNT];
+    scale_data_t in_range;
     scale_t in_scale;
+    scale_data_t param_range;
     scale_t param_scale;
 } scene_variables_t;
 //clang-format on
@@ -116,6 +118,7 @@ typedef struct {
     scene_script_t scripts[SCRIPT_COUNT];
     scene_turtle_t turtle;
     bool every_last;
+    cal_data_t cal;
 } scene_state_t;
 
 extern void ss_init(scene_state_t *ss);
@@ -181,8 +184,20 @@ void ss_turtle_set_val(scene_state_t *, scene_turtle_t *, int16_t);
 
 void ss_set_param_scale(scene_state_t *, int16_t, int16_t);
 void ss_set_in_scale(scene_state_t *, int16_t, int16_t);
+void ss_update_in_scale(scene_state_t *);
+void ss_update_param_scale(scene_state_t *);
 int16_t ss_get_param(scene_state_t *);
 int16_t ss_get_in(scene_state_t *);
+
+
+int16_t ss_get_in_min(scene_state_t *);
+int16_t ss_get_in_max(scene_state_t *);
+void ss_set_in_min(scene_state_t *, int16_t);
+void ss_set_in_max(scene_state_t *, int16_t);
+int16_t ss_get_param_min(scene_state_t *);
+int16_t ss_get_param_max(scene_state_t *);
+void ss_set_param_min(scene_state_t *, int16_t);
+void ss_set_param_max(scene_state_t *, int16_t);
 
 ////////////////////////////////////////////////////////////////////////////////
 // EXEC STATE //////////////////////////////////////////////////////////////////
