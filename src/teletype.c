@@ -332,7 +332,8 @@ void tele_tick(scene_state_t *ss, uint8_t time) {
                 // The delay flag is required to protect the script number
                 // TODO: investigate delayed nested SCRIPTs
                 es_variables(&es)->delayed = true;
-                es_variables(&es)->script_number = ss->delay.origin[i];
+                es_variables(&es)->script_number = ss->delay.origin_script[i];
+                es_variables(&es)->i = ss->delay.origin_i[i];
 
                 run_script_with_exec_state(ss, &es, TEMP_SCRIPT);
 
