@@ -10,6 +10,7 @@
 #include "ops/delay.h"
 #include "ops/earthsea.h"
 #include "ops/hardware.h"
+#include "ops/init.h"
 #include "ops/justfriends.h"
 #include "ops/maths.h"
 #include "ops/meadowphysics.h"
@@ -34,6 +35,11 @@ const tele_op_t *tele_ops[E_OP__LENGTH] = {
     &op_A, &op_B, &op_C, &op_D, &op_DRUNK, &op_DRUNK_MAX, &op_DRUNK_MIN,
     &op_DRUNK_WRAP, &op_FLIP, &op_I, &op_O, &op_O_INC, &op_O_MAX, &op_O_MIN,
     &op_O_WRAP, &op_T, &op_TIME, &op_TIME_ACT, &op_LAST, &op_X, &op_Y, &op_Z,
+
+    // init
+    &op_INIT, &op_INIT_SCENE, &op_INIT_SCRIPT, &op_INIT_SCRIPT_ALL, &op_INIT_P,
+    &op_INIT_P_ALL, &op_INIT_CV, &op_INIT_CV_ALL, &op_INIT_TR, &op_INIT_TR_ALL,
+    &op_INIT_DATA, &op_INIT_TIME,
 
     // turtle
     &op_TURTLE, &op_TURTLE_X, &op_TURTLE_Y, &op_TURTLE_MOVE, &op_TURTLE_F,

@@ -89,6 +89,7 @@ CSRCS = \
 	../src/ops/delay.c					\
 	../src/ops/earthsea.c					\
 	../src/ops/hardware.c					\
+	../src/ops/init.c					\
 	../src/ops/justfriends.c				\
 	../src/ops/maths.c					\
 	../src/ops/meadowphysics.c				\

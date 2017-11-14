@@ -64,7 +64,7 @@ void ss_pattern_init(scene_state_t *ss, size_t pattern_no) {
     for (size_t i = 0; i < PATTERN_LENGTH; i++) { p->val[i] = 0; }
 }
 
-// external variable setting
+// Hardware
 
 void ss_set_in(scene_state_t *ss, int16_t value) {
     ss->variables.in = value;
@@ -252,7 +252,7 @@ void ss_delete_script_command(scene_state_t *ss, script_number_t script_idx,
 }
 
 void ss_clear_script(scene_state_t *ss, size_t script_idx) {
-    ss_set_script_len(ss, script_idx, 0);
+    memset(&ss->scripts[script_idx], 0, sizeof(scene_script_t));
 }
 
 scene_script_t *ss_scripts_ptr(scene_state_t *ss) {

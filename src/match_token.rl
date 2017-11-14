@@ -41,6 +41,20 @@
         "X"           => { MATCH_OP(E_OP_X); };
         "Y"           => { MATCH_OP(E_OP_Y); };
         "Z"           => { MATCH_OP(E_OP_Z); };
+
+        # init
+        "INIT"            => { MATCH_OP(E_OP_INIT); };
+        "INIT.SCENE"      => { MATCH_OP(E_OP_INIT_SCENE); };
+        "INIT.SCRIPT"     => { MATCH_OP(E_OP_INIT_SCRIPT); };
+        "INIT.SCRIPT.ALL" => { MATCH_OP(E_OP_INIT_SCRIPT_ALL); };
+        "INIT.P"          => { MATCH_OP(E_OP_INIT_P); };
+        "INIT.P.ALL"      => { MATCH_OP(E_OP_INIT_P_ALL); };
+        "INIT.CV"         => { MATCH_OP(E_OP_INIT_CV); };
+        "INIT.CV.ALL"     => { MATCH_OP(E_OP_INIT_CV_ALL); };
+        "INIT.TR"         => { MATCH_OP(E_OP_INIT_TR); };
+        "INIT.TR.ALL"     => { MATCH_OP(E_OP_INIT_TR_ALL); };
+        "INIT.DATA"       => { MATCH_OP(E_OP_INIT_DATA); };
+        "INIT.TIME"       => { MATCH_OP(E_OP_INIT_TIME); };
         
         # turtle
         "@"           => { MATCH_OP(E_OP_TURTLE); };
