@@ -46,6 +46,17 @@
 #include "teletype_io.h"
 #include "usb_disk_mode.h"
 
+#define TELETYPE_PROFILE
+#ifdef TELETYPE_PROFILE
+#include "profile.h"
+
+profile_t
+    prof_Script[SCRIPT_COUNT],
+//    prof_Delay[DELAY_COUNT], // in teletype.c :(
+    prof_CV,
+    prof_ADC,
+    prof_ScreenRefresh;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // constants
@@ -148,6 +159,9 @@ static void render_init(void);
 // timer callbacks
 
 void cvTimer_callback(void* o) {
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_CV);
+#endif
     bool updated = false;
     bool slewing = false;
 
@@ -192,6 +206,9 @@ void cvTimer_callback(void* o) {
         spi_write(DAC_SPI, a1 << 4);
         spi_unselectChip(DAC_SPI, DAC_SPI_NPCS);
     }
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_CV);
+#endif
 }
 
 void clockTimer_callback(void* o) {
@@ -253,6 +270,9 @@ void handler_Front(int32_t data) {
 
 
 void handler_PollADC(int32_t data) {
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_ADC);
+#endif
     static int16_t last_knob = 0;
 
     adc_convert(&adc);
@@ -275,6 +295,9 @@ void handler_PollADC(int32_t data) {
     else {
         ss_set_param(&scene_state, adc[1] << 2);
     }
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_ADC);
+#endif
 }
 
 void handler_KeyTimer(int32_t data) {
@@ -354,10 +377,21 @@ void handler_MscConnect(int32_t data) {
 }
 
 void handler_Trigger(int32_t data) {
-    if (!ss_get_mute(&scene_state, data)) { run_script(&scene_state, data); }
+    if (!ss_get_mute(&scene_state, data)) {
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[data]);
+#endif
+        run_script(&scene_state, data);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[data]);
+#endif
+    }
 }
 
 void handler_ScreenRefresh(int32_t data) {
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_ScreenRefresh);
+#endif
     uint8_t screen_dirty = 0;
 
     switch (mode) {
@@ -372,6 +406,9 @@ void handler_ScreenRefresh(int32_t data) {
 
     for (size_t i = 0; i < 8; i++)
         if (screen_dirty & (1 << i)) { region_draw(&line[i]); }
+#ifdef TELETYPE_PROFILE
+    profile_update(&prof_ScreenRefresh);
+#endif
 }
 
 void handler_EventTimer(int32_t data) {
@@ -385,7 +422,13 @@ void handler_AppCustom(int32_t data) {
     // data argument. For now, we're just using it for the metro
     if (ss_get_script_len(&scene_state, METRO_SCRIPT)) {
         set_metro_icon(true);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[METRO_SCRIPT]);
+#endif
         run_script(&scene_state, METRO_SCRIPT);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[METRO_SCRIPT]);
+#endif
     }
     else
         set_metro_icon(false);
@@ -565,7 +608,13 @@ bool process_global_keys(uint8_t k, uint8_t m, bool is_held_key) {
     // <F9>: run metro script
     // <F10>: run init script
     else if (no_mod(m) && k >= HID_F1 && k <= HID_F10) {
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[k - HID_F1]);
+#endif
         run_script(&scene_state, k - HID_F1);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[k - HID_F1]);
+#endif
         return true;
     }
     // alt-<F1> through alt-<F8>: edit corresponding script
@@ -591,7 +640,13 @@ bool process_global_keys(uint8_t k, uint8_t m, bool is_held_key) {
     }
     // <numpad-1> through <numpad-8>: run corresponding script
     else if (no_mod(m) && k >= HID_KEYPAD_1 && k <= HID_KEYPAD_8) {
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[k - HID_KEYPAD_1]);
+#endif
         run_script(&scene_state, k - HID_KEYPAD_1);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[k - HID_KEYPAD_1]);
+#endif
         return true;
     }
     // <num lock>: jump to pattern mode
@@ -805,8 +860,37 @@ int main(void) {
     // fully initalise
     delay_ms(50);
 
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[INIT_SCRIPT]);
+#endif
     run_script(&scene_state, INIT_SCRIPT);
+#ifdef TELETYPE_PROFILE
+        profile_update(&prof_Script[INIT_SCRIPT]);
+#endif
     scene_state.initializing = false;
+#ifdef TELETYPE_PROFILE
+    uint32_t count = 0;
+#endif
+    while (true) {
+        check_events();
+#ifdef TELETYPE_PROFILE
+        count = (count + 1) % (FCPU_HZ / 10);
+        if (count == 0) {
+            print_dbg("\r\n\r\nProfile Data (us)");
+            for (uint8_t i = 0; i < SCRIPT_COUNT; i++) {
+                print_dbg("\r\nScript ");
+                print_dbg_ulong(i);
+                print_dbg(":\t");
+                print_dbg_ulong(profile_delta_us(&prof_Script[i]));
+            }
+            print_dbg("\r\nCV Write:\t");
+            print_dbg_ulong(profile_delta_us(&prof_CV));
+            print_dbg("\r\nADC Read:\t");
+            print_dbg_ulong(profile_delta_us(&prof_ADC));
+            print_dbg("\r\nScreen Refresh:\t");
+            print_dbg_ulong(profile_delta_us(&prof_ScreenRefresh));
 
-    while (true) { check_events(); }
+        }
+#endif
+    }
 }
