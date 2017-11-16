@@ -148,6 +148,9 @@
         "MOD"         => { MATCH_OP(E_OP_MOD); };
         "RAND"        => { MATCH_OP(E_OP_RAND); };
         "RRAND"       => { MATCH_OP(E_OP_RRAND); };
+        "R"           => { MATCH_OP(E_OP_R); };
+        "R.MIN"       => { MATCH_OP(E_OP_R_MIN); };
+        "R.MAX"       => { MATCH_OP(E_OP_R_MAX); };
         "TOSS"        => { MATCH_OP(E_OP_TOSS); };
         "MIN"         => { MATCH_OP(E_OP_MIN); };
         "MAX"         => { MATCH_OP(E_OP_MAX); };

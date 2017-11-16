@@ -65,6 +65,8 @@ typedef struct {
     int16_t param;
     int16_t q[Q_LENGTH];
     int16_t q_n;
+    int16_t r_min;
+    int16_t r_max;
     int16_t scene;
     int16_t time;
     int16_t time_act;
