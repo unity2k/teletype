@@ -46,16 +46,24 @@
 #include "teletype_io.h"
 #include "usb_disk_mode.h"
 
-#define TELETYPE_PROFILE
 #ifdef TELETYPE_PROFILE
 #include "profile.h"
 
 profile_t
     prof_Script[SCRIPT_COUNT],
-//    prof_Delay[DELAY_COUNT], // in teletype.c :(
+    prof_Delay[DELAY_SIZE], 
     prof_CV,
     prof_ADC,
     prof_ScreenRefresh;
+
+void tele_profile_script(size_t s) {
+    profile_update(&prof_Script[s]);
+}
+
+void tele_profile_delay(uint8_t d) {
+    profile_update(&prof_Delay[d]);
+}
+
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -378,13 +386,7 @@ void handler_MscConnect(int32_t data) {
 
 void handler_Trigger(int32_t data) {
     if (!ss_get_mute(&scene_state, data)) {
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[data]);
-#endif
         run_script(&scene_state, data);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[data]);
-#endif
     }
 }
 
@@ -422,13 +424,7 @@ void handler_AppCustom(int32_t data) {
     // data argument. For now, we're just using it for the metro
     if (ss_get_script_len(&scene_state, METRO_SCRIPT)) {
         set_metro_icon(true);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[METRO_SCRIPT]);
-#endif
         run_script(&scene_state, METRO_SCRIPT);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[METRO_SCRIPT]);
-#endif
     }
     else
         set_metro_icon(false);
@@ -608,13 +604,7 @@ bool process_global_keys(uint8_t k, uint8_t m, bool is_held_key) {
     // <F9>: run metro script
     // <F10>: run init script
     else if (no_mod(m) && k >= HID_F1 && k <= HID_F10) {
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[k - HID_F1]);
-#endif
         run_script(&scene_state, k - HID_F1);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[k - HID_F1]);
-#endif
         return true;
     }
     // alt-<F1> through alt-<F8>: edit corresponding script
@@ -640,13 +630,7 @@ bool process_global_keys(uint8_t k, uint8_t m, bool is_held_key) {
     }
     // <numpad-1> through <numpad-8>: run corresponding script
     else if (no_mod(m) && k >= HID_KEYPAD_1 && k <= HID_KEYPAD_8) {
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[k - HID_KEYPAD_1]);
-#endif
         run_script(&scene_state, k - HID_KEYPAD_1);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[k - HID_KEYPAD_1]);
-#endif
         return true;
     }
     // <num lock>: jump to pattern mode
@@ -860,14 +844,9 @@ int main(void) {
     // fully initalise
     delay_ms(50);
 
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[INIT_SCRIPT]);
-#endif
     run_script(&scene_state, INIT_SCRIPT);
-#ifdef TELETYPE_PROFILE
-        profile_update(&prof_Script[INIT_SCRIPT]);
-#endif
     scene_state.initializing = false;
+
 #ifdef TELETYPE_PROFILE
     uint32_t count = 0;
 #endif
@@ -877,12 +856,17 @@ int main(void) {
         count = (count + 1) % (FCPU_HZ / 10);
         if (count == 0) {
             print_dbg("\r\n\r\nProfile Data (us)");
-            for (uint8_t i = 0; i < SCRIPT_COUNT; i++) {
+            for (uint8_t i = 0; i < SCRIPT_COUNT - 1; i++) {
                 print_dbg("\r\nScript ");
                 print_dbg_ulong(i);
                 print_dbg(":\t");
                 print_dbg_ulong(profile_delta_us(&prof_Script[i]));
             }
+            uint32_t total = 0;
+            for (uint8_t i = 0; i < DELAY_SIZE; i++)
+                total += profile_delta_us(&prof_Delay[i]);
+            print_dbg("\r\nDelays (total):\t");
+            print_dbg_ulong(total);
             print_dbg("\r\nCV Write:\t");
             print_dbg_ulong(profile_delta_us(&prof_CV));
             print_dbg("\r\nADC Read:\t");

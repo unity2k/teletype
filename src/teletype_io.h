@@ -39,4 +39,9 @@ extern bool tele_get_input_state(uint8_t);
 
 void tele_save_calibration(void);
 
+#ifdef TELETYPE_PROFILE
+void tele_profile_script(size_t);
+void tele_profile_delay(uint8_t);
+#endif
+
 #endif

@@ -8,9 +8,8 @@
 #include "command.h"
 #include "state.h"
 
-#define TELETYPE_VERSION "TELETYPE 2.2.0-ALPHA.3"
 #define TELE_ERROR_MSG_LENGTH 16
-//#define TELETYPE_PROFILE // un-comment this line to enable profiling
+#define TELETYPE_PROFILE // un-comment this line to enable profiling
 
 typedef enum {
     E_OK,
