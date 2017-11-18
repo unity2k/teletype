@@ -1,0 +1,6 @@
+[
+    { "directory": ".",
+        "command": "avr32-gcc -c -o test.o test.c",
+        "file": "test.c"
+    }
+]
