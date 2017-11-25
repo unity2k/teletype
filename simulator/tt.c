@@ -94,6 +94,9 @@ bool tele_get_input_state(uint8_t n) {
 
 void tele_save_calibration() {}
 
+void tele_profile_script(size_t s) {}
+void tele_profile_delay(uint8_t d) {}
+
 int main() {
     char *in;
     time_t t;
