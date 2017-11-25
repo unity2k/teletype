@@ -52,17 +52,34 @@ const tele_op_t op_INIT_DATA =
 const tele_op_t op_INIT_TIME =
     MAKE_GET_OP(INIT.TIME, op_INIT_TIME_get, 0, false);
 
+
+// identical with below, for now.
 static void op_INIT_get(const void *NOTUSED(data), scene_state_t *ss,
                         exec_state_t *NOTUSED(es),
                         command_state_t *NOTUSED(cs)) {
+    // Because we can't see the flash from this context, we cache calibration
+    cal_data_t caldata = ss->cal;
+    // At boot, all data is zeroed
     memset(ss, 0, sizeof(scene_state_t));
     ss_init(ss);
+    
+    ss->cal = caldata;
+    // Once calibration data is loaded, the scales need to be reset
+    ss_update_param_scale(ss);
+    ss_update_in_scale(ss);
+
+    tele_vars_updated();
 }
 
 static void op_INIT_SCENE_get(const void *NOTUSED(data), scene_state_t *ss,
                               exec_state_t *NOTUSED(es),
                               command_state_t *NOTUSED(cs)) {
+    cal_data_t caldata = ss->cal;
+    memset(ss, 0, sizeof(scene_state_t));
     ss_init(ss);
+    ss->cal = caldata;
+    ss_update_param_scale(ss);
+    ss_update_in_scale(ss);
     tele_vars_updated();
 }
 
