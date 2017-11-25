@@ -1,0 +1,7 @@
+disable-rules:
+  - UnusedMethodParameter
+  - ShortVariableName
+  - LongVariableName
+  - LongLine
+output: oclint.html
+report-type: html
