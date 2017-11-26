@@ -10,6 +10,7 @@
 - **FIX**: multiply now saturates at limits, previous behaviour returned 0 at overflow
 - **FIX**: entered values now saturate at int16 limits
 - **FIX**: reduced flash memory consumption by not storing TEMP script
+- **FIX** : corrected functionality of JI op for 1volt/octave tuning
 
 ## v2.1
 - **BREAKING**: the `I` variable is now scoped to the `L` loop, and does not exist outside of an execution context.  Scripts using `I` as a general-purpose variable will be broken. 
