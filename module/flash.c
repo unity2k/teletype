@@ -13,7 +13,7 @@
 
 // NVRAM data structure located in the flash array.
 typedef const struct {
-    scene_script_t scripts[SCRIPT_COUNT - 1];
+    scene_script_t scripts[SCRIPT_COUNT - 1]; // Exclude TEMP script
     scene_pattern_t patterns[PATTERN_COUNT];
     char text[SCENE_TEXT_LINES][SCENE_TEXT_CHARS];
 } nvram_scene_t;
@@ -54,6 +54,7 @@ void flash_prepare() {
 void flash_write(uint8_t preset_no, scene_state_t *scene,
                  char (*text)[SCENE_TEXT_LINES][SCENE_TEXT_CHARS]) {
     flashc_memcpy((void *)&f.scenes[preset_no].scripts, ss_scripts_ptr(scene),
+                  // Exclude TEMP script from flash storage by subtracting one
                   ss_scripts_size() - sizeof(scene_script_t), true);
     flashc_memcpy((void *)&f.scenes[preset_no].patterns, ss_patterns_ptr(scene),
                   ss_patterns_size(), true);
@@ -64,6 +65,7 @@ void flash_write(uint8_t preset_no, scene_state_t *scene,
 void flash_read(uint8_t preset_no, scene_state_t *scene,
                 char (*text)[SCENE_TEXT_LINES][SCENE_TEXT_CHARS]) {
     memcpy(ss_scripts_ptr(scene), &f.scenes[preset_no].scripts,
+           // Exclude size of TEMP script as above
            ss_scripts_size() - sizeof(scene_script_t));
     memcpy(ss_patterns_ptr(scene), &f.scenes[preset_no].patterns,
            ss_patterns_size());
