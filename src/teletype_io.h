@@ -33,8 +33,17 @@ extern void tele_scene(uint8_t i);
 // called when a pattern is updated
 extern void tele_pattern_updated(void);
 
+extern void tele_vars_updated(void);
+
 extern void tele_kill(void);
 extern void tele_mute(void);
 extern bool tele_get_input_state(uint8_t);
+
+void tele_save_calibration(void);
+
+#ifdef TELETYPE_PROFILE
+void tele_profile_script(size_t);
+void tele_profile_delay(uint8_t);
+#endif
 
 #endif

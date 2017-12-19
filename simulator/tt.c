@@ -64,6 +64,8 @@ void tele_ii_tx(uint8_t addr, uint8_t *data, uint8_t l) {
     }
 }
 
+void tele_vars_updated() {}
+
 void tele_ii_rx(uint8_t addr, uint8_t *data, uint8_t l) {
     printf("II_rx  addr:%" PRIu8 " l:%" PRIu8, addr, l);
     printf("\n");
@@ -94,6 +96,11 @@ bool tele_get_input_state(uint8_t n) {
     printf("\n");
     return false;
 }
+
+void tele_save_calibration() {}
+
+void tele_profile_script(size_t s) {}
+void tele_profile_delay(uint8_t d) {}
 
 int main() {
     char *in;
