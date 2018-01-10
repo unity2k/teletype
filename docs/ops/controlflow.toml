@@ -176,3 +176,16 @@ short = "clears stack, clears delays, cancels pulses, cancels slews, disables me
 prototype = "BREAK"
 aliases = ["BRK"]
 short = "halts execution of the current script"
+"""
+
+[INIT]
+prototype = "INIT"
+short = "initialize various states dependent on chosen parameter"
+description = """
+**WARNING**: You will lose setting when you initialize selected parameters.
+"""
+Example:
+```
+INIT        => Clear all state data
+INIT.CV x   => Clear all parameters on CV channel x
+INIT.TR.ALL => Clear all triggers
