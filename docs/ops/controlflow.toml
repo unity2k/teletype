@@ -186,6 +186,6 @@ description = """
 """
 Example:
 ```
-INIT        => Clear all state data
-INIT.CV x   => Clear all parameters on CV channel x
-INIT.TR.ALL => Clear all triggers
+`INIT`        => Clear all state data
+`INIT.CV x`   => Clear all parameters on CV channel x
+`INIT.TR.ALL` => Clear all triggers
