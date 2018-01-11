@@ -182,7 +182,7 @@ prototype = "INIT"
 short = "clears all state data"
 description = """
 
-**WARNING**: You will lose all setting when you initialize using `INIT` - there is NO undo!
+**WARNING**: You will lose all settings when you initialize using `INIT` - there is NO undo!
 """
 
 ["INIT.CV"]
