@@ -45,7 +45,6 @@ Screen saver engages after 90 minutes of inactivity
    • Multiply now saturates at limits (-32768 / 32767) while previous behavior returned 0 at overflow
    • Entered values now saturate at Int16 limits which are -32768 / 32767
    • Reduced flash memory consumption by not storing TEMP script
-   • Removed TEMP script allocation in flash
    • I now carries across `DEL` commands
    • Corrected functionality of `JI` (Just Intonation) op for 1V/Oct tuning
 
